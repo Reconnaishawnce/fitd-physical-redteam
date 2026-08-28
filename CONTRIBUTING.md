@@ -20,7 +20,7 @@ every push.
 The header, in exact order:
 
 ```
-id,title,category,technique,actor_type,attack_id,year,source,url,summary,tags,link_quality,added
+id,title,category,technique,actor_type,attack_id,year,source,url,url_secondary,summary,tags,link_quality,added
 ```
 
 | Field | Rule |
@@ -34,6 +34,7 @@ id,title,category,technique,actor_type,attack_id,year,source,url,summary,tags,li
 | `year` | 4-digit year of the event or publication, or blank. Used for sorting. |
 | `source` | Publisher or org (e.g. `IEEE S&P`, `DOJ`, `404 Media`). |
 | `url` | Full `https` URL. **Required**; a row with no URL is invalid. |
+| `url_secondary` | Optional second source or alternate link (e.g. a mirror, an archive snapshot, or corroborating coverage). Blank if none. Shown as an "alt source" link. |
 | `summary` | One or two plain sentences. No hype. |
 | `tags` | Freeform, joined with `; `. |
 | `link_quality` | `high` (primary/official source), `medium` (reputable secondary), or `low` (blog, forum, unconfirmed). Rates the link as a citation. |

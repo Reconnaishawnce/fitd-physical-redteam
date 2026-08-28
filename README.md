@@ -7,7 +7,7 @@
 A curated index of the physical red-team canon: incidents, tradecraft, engagement
 post-mortems, legal footing, gear, defense, and talks.
 
-[![Entries](https://img.shields.io/badge/entries-15-8a2f2f)](data/links.csv) [![High quality](https://img.shields.io/badge/high_quality-11/15-a6741c)](data/links.csv) [![Categories](https://img.shields.io/badge/categories-6-6d6558)](#contents) [![Build](https://github.com/Reconnaishawnce/fitd-physical-redteam/actions/workflows/build.yml/badge.svg)](https://github.com/Reconnaishawnce/fitd-physical-redteam/actions/workflows/build.yml) [![License](https://img.shields.io/badge/license-MIT-3f7d52)](LICENSE)
+[![Entries](https://img.shields.io/badge/entries-16-8a2f2f)](data/links.csv) [![High quality](https://img.shields.io/badge/high_quality-12/16-a6741c)](data/links.csv) [![Categories](https://img.shields.io/badge/categories-6-6d6558)](#contents) [![Build](https://github.com/Reconnaishawnce/fitd-physical-redteam/actions/workflows/build.yml/badge.svg)](https://github.com/Reconnaishawnce/fitd-physical-redteam/actions/workflows/build.yml) [![License](https://img.shields.io/badge/license-MIT-3f7d52)](LICENSE)
 
 **[Browse the searchable index](https://reconnaishawnce.github.io/fitd-physical-redteam/)** · **[Add a link](CONTRIBUTING.md)** · **[Raw CSV](data/links.csv)**
 
@@ -19,7 +19,7 @@ The single source of truth is [`data/links.csv`](data/links.csv), which GitHub a
 
 ## Contents
 
-- [Incidents in the Wild](#incidents-in-the-wild) &nbsp;·&nbsp; **5**
+- [Incidents in the Wild](#incidents-in-the-wild) &nbsp;·&nbsp; **6**
 - [Tradecraft & Methodology](#tradecraft--methodology) &nbsp;·&nbsp; **1**
 - [Engagements & Lessons Learned](#engagements--lessons-learned) &nbsp;·&nbsp; **2**
 - [Legal, Authorization & Liability](#legal-authorization--liability) &nbsp;·&nbsp; **1**
@@ -32,10 +32,11 @@ The single source of truth is [`data/links.csv`](data/links.csv), which GitHub a
 
 ## Incidents in the Wild
 
-_5 entries_ &nbsp;·&nbsp; [Back to contents](#contents)
+_6 entries_ &nbsp;·&nbsp; [Back to contents](#contents)
 
 | Title | Year | Actor | Technique | Summary |
 | --- | --- | --- | --- | --- |
+| [Silent Ransom Group hires burglars to breach US law firms](https://archive.is/20260627113534/https://www.cnn.com/2026/06/27/politics/cybercriminals-hire-burglars-russian-us-law-firms) ([alt source](https://archive.is/20260714181954/https://www.cnn.com/2026/07/14/politics/us-indicts-russia-cybercrime)) | 2026 | Criminal | Insider recruitment; Impersonation/Pretext; Media drop (USB); Surveillance/Recon | The FBI and investigators allege the Russian-speaking Silent Ransom Group hired people in the US to enter major law firms in person, posing as IT support, plug in USB drives, and use smart glasses to stream the office, to steal client data for ransom. Attribution is alleged; a later US indictment is the secondary source. |
 | [Cargo thieves steal $1.3M in copper wire and data center gear](https://www.freightwaves.com/news/1-3m-in-stolen-copper-wire-and-data-center-equipment-recovered-near-chicago) | 2025 | Criminal |  | Two trailers of data center materials, including about $300,000 in copper wire, were stolen in the Southeast and recovered at a truck yard near Chicago via GPS tracking. Part of a sharp 2025 rise in organized cargo theft targeting AI data center supply chains. |
 | [Louvre crown jewels heist and its security failures](https://www.cbsnews.com/news/louvre-tightens-security-jewel-theft-heist/) | 2025 | Criminal | Impersonation/Pretext; Covert entry | Thieves posing as workers used a truck mounted furniture lift to reach a first floor gallery, cut into display cases, and left with French crown jewels in minutes. Later reporting flagged monitoring gaps, including exterior cameras that did not cover the balcony used for entry. |
 | [Huawei drone surveillance in the TDC 5G contract fight](https://www.bloomberg.com/news/features/2023-06-15/how-huawei-got-caught-spying-and-lost-a-200-million-5g-contract) | 2019 | Corporate | Surveillance/Recon | During the fight over TDC's ~EUR 200M 5G contract, a large drone was reportedly seen scanning an investigation room whiteboard in Copenhagen and later monitoring TDC's executive team before descending into a waiting van. Reported by Bloomberg as part of an alleged Huawei espionage effort; Huawei denies involvement, so attribution is reported rather than adjudicated. |
@@ -113,6 +114,6 @@ _2 entries_ &nbsp;·&nbsp; [Back to contents](#contents)
 
 <div align="center">
 
-**15 entries** · **11 high-quality sources** · last generated **2026-08-28** (UTC) by [`scripts/build.py`](scripts/build.py)
+**16 entries** · **12 high-quality sources** · last generated **2026-08-28** (UTC) by [`scripts/build.py`](scripts/build.py)
 
 </div>

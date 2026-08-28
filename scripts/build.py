@@ -61,7 +61,8 @@ LINK_QUALITY_VALUES = {"low", "medium", "high"}
 
 EXPECTED_COLUMNS = [
     "id", "title", "category", "technique", "actor_type", "attack_id",
-    "year", "source", "url", "summary", "tags", "link_quality", "added",
+    "year", "source", "url", "url_secondary", "summary", "tags",
+    "link_quality", "added",
 ]
 
 
@@ -129,6 +130,10 @@ def validate(df):
         elif not url.startswith("http"):
             errors.append(f"row {line} ({rid}): url must start with http")
 
+        url2 = row["url_secondary"].strip()
+        if url2 and not url2.startswith("http"):
+            errors.append(f"row {line} ({rid}): url_secondary must start with http or be blank")
+
         year = row["year"].strip()
         if year and not (year.isdigit() and len(year) == 4):
             errors.append(f"row {line} ({rid}): year '{year}' must be a 4-digit number or blank")
@@ -165,6 +170,9 @@ def title_cell(row):
     title = md_escape(row["title"])
     url = row["url"].strip()
     cell = f"[{title}]({url})"
+    url2 = row["url_secondary"].strip()
+    if url2:
+        cell += f" ([alt source]({url2}))"
     if row["link_quality"].strip().lower() == "low":
         cell += " `[low quality]`"
     return cell

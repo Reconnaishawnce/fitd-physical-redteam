@@ -155,9 +155,11 @@ def build_cards(prs, df):
         sr.font.color.rgb = INK
 
         quality = str(row["link_quality"]).strip().lower()
+        url2 = str(row.get("url_secondary", "") or "").strip()
+        alt = f"   •   alt: {url2}" if url2 else ""
         flag_box = slide.shapes.add_textbox(Inches(0.6), Inches(6.7), Inches(12.1), Inches(0.5))
         fr = flag_box.text_frame.paragraphs[0].add_run()
-        fr.text = f"link quality: {quality}   •   {row['url']}"
+        fr.text = f"link quality: {quality}   •   {row['url']}{alt}"
         fr.font.size = Pt(11)
         fr.font.color.rgb = MUTED
 
