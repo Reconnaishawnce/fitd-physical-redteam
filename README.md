@@ -7,7 +7,7 @@
 A curated index of the physical red-team canon: incidents, tradecraft, engagement
 post-mortems, legal footing, gear, defense, and talks.
 
-[![Entries](https://img.shields.io/badge/entries-22-8a2f2f)](data/links.csv) [![High quality](https://img.shields.io/badge/high_quality-15/22-a6741c)](data/links.csv) [![Categories](https://img.shields.io/badge/categories-6-6d6558)](#contents) [![Build](https://github.com/Reconnaishawnce/fitd-physical-redteam/actions/workflows/build.yml/badge.svg)](https://github.com/Reconnaishawnce/fitd-physical-redteam/actions/workflows/build.yml) [![License](https://img.shields.io/badge/license-MIT-3f7d52)](LICENSE)
+[![Entries](https://img.shields.io/badge/entries-26-8a2f2f)](data/links.csv) [![High quality](https://img.shields.io/badge/high_quality-18/26-a6741c)](data/links.csv) [![Categories](https://img.shields.io/badge/categories-6-6d6558)](#contents) [![Build](https://github.com/Reconnaishawnce/fitd-physical-redteam/actions/workflows/build.yml/badge.svg)](https://github.com/Reconnaishawnce/fitd-physical-redteam/actions/workflows/build.yml) [![License](https://img.shields.io/badge/license-MIT-3f7d52)](LICENSE)
 
 **[Browse the searchable index](https://reconnaishawnce.github.io/fitd-physical-redteam/)** · **[Add a link](CONTRIBUTING.md)** · **[Raw CSV](data/links.csv)**
 
@@ -19,7 +19,7 @@ The single source of truth is [`data/links.csv`](data/links.csv), which GitHub a
 
 ## Contents
 
-- [Incidents in the Wild](#incidents-in-the-wild) &nbsp;·&nbsp; **9**
+- [Incidents in the Wild](#incidents-in-the-wild) &nbsp;·&nbsp; **13**
 - [Tradecraft & Methodology](#tradecraft--methodology) &nbsp;·&nbsp; **1**
 - [Engagements & Lessons Learned](#engagements--lessons-learned) &nbsp;·&nbsp; **2**
 - [Legal, Authorization & Liability](#legal-authorization--liability) &nbsp;·&nbsp; **1**
@@ -32,15 +32,19 @@ The single source of truth is [`data/links.csv`](data/links.csv), which GitHub a
 
 ## Incidents in the Wild
 
-_9 entries_ &nbsp;·&nbsp; [Back to contents](#contents)
+_13 entries_ &nbsp;·&nbsp; [Back to contents](#contents)
 
 | Title | Year | Actor | Technique | Summary |
 | --- | --- | --- | --- | --- |
 | [Silent Ransom Group hires burglars to breach US law firms](https://archive.is/20260627113534/https://www.cnn.com/2026/06/27/politics/cybercriminals-hire-burglars-russian-us-law-firms) ([alt source](https://archive.is/20260714181954/https://www.cnn.com/2026/07/14/politics/us-indicts-russia-cybercrime)) | 2026 | Criminal | Insider recruitment; Impersonation/Pretext; Media drop (USB); Surveillance/Recon | The FBI and investigators allege the Russian-speaking Silent Ransom Group hired people in the US to enter major law firms in person, posing as IT support, plug in USB drives, and use smart glasses to stream the office, to steal client data for ransom. Attribution is alleged; a later US indictment is the secondary source. |
 | [Cargo thieves steal $1.3M in copper wire and data center gear](https://www.freightwaves.com/news/1-3m-in-stolen-copper-wire-and-data-center-equipment-recovered-near-chicago) | 2025 | Criminal |  | Two trailers of data center materials, including about $300,000 in copper wire, were stolen in the Southeast and recovered at a truck yard near Chicago via GPS tracking. Part of a sharp 2025 rise in organized cargo theft targeting AI data center supply chains. |
 | [Louvre crown jewels heist and its security failures](https://www.cbsnews.com/news/louvre-tightens-security-jewel-theft-heist/) | 2025 | Criminal | Impersonation/Pretext; Covert entry | Thieves posing as workers used a truck mounted furniture lift to reach a first floor gallery, cut into display cases, and left with French crown jewels in minutes. Later reporting flagged monitoring gaps, including exterior cameras that did not cover the balcony used for entry. |
+| [Las Vegas Strip hotel room heists using under door tools](https://www.ktnv.com/13-investigates/hotel-room-heists-have-guests-questioning-security-on-the-las-vegas-strip) ([alt source](https://www.ktnv.com/13-investigates/hotel-room-heists-on-the-rise-with-guests-targeted-while-sleeping)) | 2021 | Criminal | Covert entry | Investigative reporting on thieves entering occupied hotel rooms on the Las Vegas Strip while guests sleep, in some cases using an under door tool that reaches beneath the door to release the interior handle and bypass the deadbolt. Reported losses include tens of thousands in cash, watches, and jewelry. |
 | [Huawei drone surveillance in the TDC 5G contract fight](https://www.bloomberg.com/news/features/2023-06-15/how-huawei-got-caught-spying-and-lost-a-200-million-5g-contract) | 2019 | Corporate | Surveillance/Recon | During the fight over TDC's ~EUR 200M 5G contract, a large drone was reportedly seen scanning an investigation room whiteboard in Copenhagen and later monitoring TDC's executive team before descending into a waiting van. Reported by Bloomberg as part of an alleged Huawei espionage effort; Huawei denies involvement, so attribution is reported rather than adjudicated. |
 | [Hatton Garden safe deposit burglary](https://en.wikipedia.org/wiki/Hatton_Garden_safe_deposit_burglary) | 2015 | Criminal | Covert entry | Over a holiday weekend, a crew disabled the lift, climbed down the shaft, and drilled through a thick vault wall to empty safe deposit boxes in London's jewelry district. A textbook covert entry that exploited timing and gaps in physical monitoring. |
+| [Barclays branch KVM heist by a fake IT engineer](https://www.theregister.com/2013/09/20/barclays_cyber_cops_make_arrests/) | 2013 | Criminal | Impersonation/Pretext; Hardware implant | A man posing as an IT engineer walked into a London Barclays branch, said he was there to fix a computer, and plugged a keyboard video mouse device into a PC that let the crew control it remotely and move about 1.3 million pounds. A near identical attempt hit Santander. |
+| [Brussels Airport diamond heist](https://www.nbcnews.com/news/world/robbers-snatch-50-million-diamonds-plane-belgium-flna1C8418520) ([alt source](https://en.wikipedia.org/wiki/Brussels_Airport_diamond_heist)) | 2013 | Criminal | Impersonation/Pretext; Covert entry | Eight men in police style uniforms and cars cut a hole in the airport perimeter fence, drove onto the tarmac, and took about 50 million dollars in diamonds from the hold of a parked plane in roughly five minutes, without firing a shot. |
+| [Y-12 nuclear complex break-in by peace activists](https://www.cbsnews.com/news/nun-85-who-broke-into-nuclear-weapons-complex-resentenced-megan-rice/) | 2012 | Hacktivist | Covert entry | Three peace activists, one an 82 year old nun, cut through four fences and walked nearly a mile to reach the highly enriched uranium storage building at the Y-12 complex, going undetected for hours. Called the biggest security breach in the history of the US atomic complex. |
 | [Stuxnet and the air-gap USB vector](https://archive.org/details/w32_stuxnet_dossier) | 2010 | Nation-state | Media drop (USB) | Malware widely reported to have reached air-gapped industrial systems via removable media. Illustrates a physical introduction vector into an isolated network; specific attribution is widely reported rather than adjudicated. |
 | [GAO covert testing: investigators smuggle bomb components into federal buildings](https://www.gao.gov/products/gao-09-687t) | 2009 | Authorized red team | Covert entry; Impersonation/Pretext | US Government Accountability Office investigators used covert testing to carry bomb making components past security at 10 of 10 high security federal buildings, then assembled a device inside and moved through offices. A benchmark result for authorized physical red teaming at scale. |
 | [Antwerp diamond heist (School of Turin)](https://www.wired.com/2009/03/ff-diamonds/) | 2003 | Criminal | Covert entry; Surveillance/Recon | Thieves defeated multiple layers of vault security at the Antwerp Diamond Center and emptied scores of safe deposit boxes in one of the largest diamond heists on record. Wired's long-form account details the reconnaissance and bypass tradecraft involved. |
@@ -120,6 +124,6 @@ _2 entries_ &nbsp;·&nbsp; [Back to contents](#contents)
 
 <div align="center">
 
-**22 entries** · **15 high-quality sources** · last generated **2026-08-28** (UTC) by [`scripts/build.py`](scripts/build.py)
+**26 entries** · **18 high-quality sources** · last generated **2026-08-28** (UTC) by [`scripts/build.py`](scripts/build.py)
 
 </div>
