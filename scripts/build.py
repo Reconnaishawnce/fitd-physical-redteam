@@ -161,9 +161,18 @@ def md_escape(text):
     return str(text).replace("|", "\\|").replace("\n", " ").strip()
 
 
+QUALITY_RANK = {"high": 3, "medium": 2, "low": 1}
+
+
 def year_sort_key(row):
     year = row["year"].strip()
     return int(year) if year.isdigit() else -1
+
+
+def order_key(row):
+    """Sort by link quality (high first), then by year (newest first)."""
+    rank = QUALITY_RANK.get(row["link_quality"].strip().lower(), 0)
+    return (rank, year_sort_key(row))
 
 
 def title_cell(row):
@@ -180,7 +189,7 @@ def title_cell(row):
 
 def render_section(df, category):
     rows = [r for _, r in df.iterrows() if r["category"].strip() == category]
-    rows.sort(key=year_sort_key, reverse=True)
+    rows.sort(key=order_key, reverse=True)
 
     lines = [f"## {category}", ""]
     if not rows:
