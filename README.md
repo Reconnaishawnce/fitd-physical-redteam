@@ -7,7 +7,7 @@
 A curated index of the physical red-team canon: incidents, tradecraft, engagement
 post-mortems, legal footing, gear, defense, and talks.
 
-[![Entries](https://img.shields.io/badge/entries-16-8a2f2f)](data/links.csv) [![High quality](https://img.shields.io/badge/high_quality-12/16-a6741c)](data/links.csv) [![Categories](https://img.shields.io/badge/categories-6-6d6558)](#contents) [![Build](https://github.com/Reconnaishawnce/fitd-physical-redteam/actions/workflows/build.yml/badge.svg)](https://github.com/Reconnaishawnce/fitd-physical-redteam/actions/workflows/build.yml) [![License](https://img.shields.io/badge/license-MIT-3f7d52)](LICENSE)
+[![Entries](https://img.shields.io/badge/entries-22-8a2f2f)](data/links.csv) [![High quality](https://img.shields.io/badge/high_quality-15/22-a6741c)](data/links.csv) [![Categories](https://img.shields.io/badge/categories-6-6d6558)](#contents) [![Build](https://github.com/Reconnaishawnce/fitd-physical-redteam/actions/workflows/build.yml/badge.svg)](https://github.com/Reconnaishawnce/fitd-physical-redteam/actions/workflows/build.yml) [![License](https://img.shields.io/badge/license-MIT-3f7d52)](LICENSE)
 
 **[Browse the searchable index](https://reconnaishawnce.github.io/fitd-physical-redteam/)** · **[Add a link](CONTRIBUTING.md)** · **[Raw CSV](data/links.csv)**
 
@@ -19,20 +19,20 @@ The single source of truth is [`data/links.csv`](data/links.csv), which GitHub a
 
 ## Contents
 
-- [Incidents in the Wild](#incidents-in-the-wild) &nbsp;·&nbsp; **6**
+- [Incidents in the Wild](#incidents-in-the-wild) &nbsp;·&nbsp; **9**
 - [Tradecraft & Methodology](#tradecraft--methodology) &nbsp;·&nbsp; **1**
 - [Engagements & Lessons Learned](#engagements--lessons-learned) &nbsp;·&nbsp; **2**
 - [Legal, Authorization & Liability](#legal-authorization--liability) &nbsp;·&nbsp; **1**
 - [Tools & Gear](#tools--gear) &nbsp;·&nbsp; **0**
 - [Detection & Defense](#detection--defense) &nbsp;·&nbsp; **0**
-- [Talks, Reports & Case Studies](#talks-reports--case-studies) &nbsp;·&nbsp; **4**
+- [Talks, Reports & Case Studies](#talks-reports--case-studies) &nbsp;·&nbsp; **7**
 - [Reference & Communities](#reference--communities) &nbsp;·&nbsp; **2**
 
 ---
 
 ## Incidents in the Wild
 
-_6 entries_ &nbsp;·&nbsp; [Back to contents](#contents)
+_9 entries_ &nbsp;·&nbsp; [Back to contents](#contents)
 
 | Title | Year | Actor | Technique | Summary |
 | --- | --- | --- | --- | --- |
@@ -40,8 +40,11 @@ _6 entries_ &nbsp;·&nbsp; [Back to contents](#contents)
 | [Cargo thieves steal $1.3M in copper wire and data center gear](https://www.freightwaves.com/news/1-3m-in-stolen-copper-wire-and-data-center-equipment-recovered-near-chicago) | 2025 | Criminal |  | Two trailers of data center materials, including about $300,000 in copper wire, were stolen in the Southeast and recovered at a truck yard near Chicago via GPS tracking. Part of a sharp 2025 rise in organized cargo theft targeting AI data center supply chains. |
 | [Louvre crown jewels heist and its security failures](https://www.cbsnews.com/news/louvre-tightens-security-jewel-theft-heist/) | 2025 | Criminal | Impersonation/Pretext; Covert entry | Thieves posing as workers used a truck mounted furniture lift to reach a first floor gallery, cut into display cases, and left with French crown jewels in minutes. Later reporting flagged monitoring gaps, including exterior cameras that did not cover the balcony used for entry. |
 | [Huawei drone surveillance in the TDC 5G contract fight](https://www.bloomberg.com/news/features/2023-06-15/how-huawei-got-caught-spying-and-lost-a-200-million-5g-contract) | 2019 | Corporate | Surveillance/Recon | During the fight over TDC's ~EUR 200M 5G contract, a large drone was reportedly seen scanning an investigation room whiteboard in Copenhagen and later monitoring TDC's executive team before descending into a waiting van. Reported by Bloomberg as part of an alleged Huawei espionage effort; Huawei denies involvement, so attribution is reported rather than adjudicated. |
+| [Hatton Garden safe deposit burglary](https://en.wikipedia.org/wiki/Hatton_Garden_safe_deposit_burglary) | 2015 | Criminal | Covert entry | Over a holiday weekend, a crew disabled the lift, climbed down the shaft, and drilled through a thick vault wall to empty safe deposit boxes in London's jewelry district. A textbook covert entry that exploited timing and gaps in physical monitoring. |
 | [Stuxnet and the air-gap USB vector](https://archive.org/details/w32_stuxnet_dossier) | 2010 | Nation-state | Media drop (USB) | Malware widely reported to have reached air-gapped industrial systems via removable media. Illustrates a physical introduction vector into an isolated network; specific attribution is widely reported rather than adjudicated. |
+| [GAO covert testing: investigators smuggle bomb components into federal buildings](https://www.gao.gov/products/gao-09-687t) | 2009 | Authorized red team | Covert entry; Impersonation/Pretext | US Government Accountability Office investigators used covert testing to carry bomb making components past security at 10 of 10 high security federal buildings, then assembled a device inside and moved through offices. A benchmark result for authorized physical red teaming at scale. |
 | [Antwerp diamond heist (School of Turin)](https://www.wired.com/2009/03/ff-diamonds/) | 2003 | Criminal | Covert entry; Surveillance/Recon | Thieves defeated multiple layers of vault security at the Antwerp Diamond Center and emptied scores of safe deposit boxes in one of the largest diamond heists on record. Wired's long-form account details the reconnaissance and bypass tradecraft involved. |
+| [Isabella Stewart Gardner Museum heist](https://www.fbi.gov/history/cases-and-criminals/isabella-stewart-gardner-museum-heist) | 1990 | Criminal | Impersonation/Pretext | Two men posing as police officers talked their way into the museum after hours, restrained the guards, and left with 13 works valued over $500 million. The largest property crime in US history, still unsolved, and a classic case of authority based pretext. |
 
 ---
 
@@ -90,14 +93,17 @@ _No entries yet. [Contribute one](CONTRIBUTING.md)._ &nbsp;·&nbsp; [Back to con
 
 ## Talks, Reports & Case Studies
 
-_4 entries_ &nbsp;·&nbsp; [Back to contents](#contents)
+_7 entries_ &nbsp;·&nbsp; [Back to contents](#contents)
 
 | Title | Year | Technique | Source | Summary |
 | --- | --- | --- | --- | --- |
+| [DEF CON 33: From Pwn to Plan (Turning Physical Exploits Into Upgrades)](https://www.youtube.com/watch?v=NURO3NgtXUQ) | 2025 | Covert entry | DEF CON | DEF CON 33 talk on translating physical penetration test findings into concrete security upgrades, framing physical exploits as inputs to a remediation plan rather than one off wins. |
 | [Deviant Ollam: I'll Let Myself In (Tactics of Physical Pen Testers)](https://www.youtube.com/watch?v=rnmcRTnTNC8) | 2017 | Covert entry; Impersonation/Pretext | Wild West Hackin' Fest | Widely cited overview of physical penetration testing tradecraft: bypassing doors and locks, exploiting request to exit sensors, and using pretext to move through buildings. |
 | [Jayson Street: Breaking in Bad (I'm the One Who Doesn't Knock)](https://www.youtube.com/watch?v=2vdvINDmlX8) | 2015 | Impersonation/Pretext; Tailgating | DEF CON | Social Engineering Village talk sharing attack vectors and stories from physical engagements, focused on how attackers gain trust and physical access on site. |
 | [Elevator Hacking: From the Pit to the Penthouse (Ollam & Payne)](https://www.youtube.com/watch?v=oHf1vD5_b5I) | 2014 | Covert entry | DEF CON | DEF CON 22 talk on how elevators undermine building access control, covering recall keys, hoistway access, and reaching floors that badge systems are meant to restrict. |
+| [Francis Brown: RFID Hacking (Live Free or RFID Hard)](https://www.youtube.com/watch?v=duzpEtkmAnI) | 2013 | Badge/RFID cloning | DEF CON | DEF CON 21 talk on long range RFID badge theft and cloning, introducing the Tastic RFID Thief that silently reads proximity cards from a few feet away to clone employee badges and reach restricted areas. |
 | [Jayson Street: Steal Everything, Kill Everyone, Cause Total Financial Ruin!](https://www.youtube.com/watch?v=wpO5qexoqHY) | 2011 | Impersonation/Pretext; Tailgating | DEF CON | DEF CON 19 talk walking through real social engineering and physical intrusion engagements against banks and enterprises, showing how easily an on site attacker can walk in and misbehave. |
+| [RTV Overflow: Physical Red Teaming for Offensive Cyber Teams](https://www.youtube.com/watch?v=FZS32kb5IXk) |  | Covert entry; Impersonation/Pretext | Red Team Village | Talk on bringing physical red teaming into offensive cyber work: how in person access complements network operations, common entry and pretext techniques, and how to scope and run physical engagements. Presented by Ana Aslanishvili and Shawn Abelson. |
 
 ---
 
@@ -114,6 +120,6 @@ _2 entries_ &nbsp;·&nbsp; [Back to contents](#contents)
 
 <div align="center">
 
-**16 entries** · **12 high-quality sources** · last generated **2026-08-28** (UTC) by [`scripts/build.py`](scripts/build.py)
+**22 entries** · **15 high-quality sources** · last generated **2026-08-28** (UTC) by [`scripts/build.py`](scripts/build.py)
 
 </div>
