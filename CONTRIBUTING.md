@@ -1,7 +1,7 @@
 # Contributing to FITD
 
 FITD is a curated reference guide for physical red teams. The entire dataset
-lives in one file — [`data/links.csv`](data/links.csv). Everything else
+lives in one file: [`data/links.csv`](data/links.csv). Everything else
 (the README table, exports) is generated from it. **You add a link by appending
 one row to that CSV.** Do not edit `README.md` by hand; it is regenerated on
 every push.
@@ -29,11 +29,11 @@ id,title,category,technique,actor_type,attack_id,year,source,url,summary,tags,li
 | `title` | Display title of the resource. |
 | `category` | Exactly one value from the Categories list below. |
 | `technique` | Zero or more Techniques, joined with `; `. |
-| `actor_type` | One Actor Type — for Incidents only. Blank otherwise. |
-| `attack_id` | Optional MITRE ATT&CK id (e.g. `T1200`) where one genuinely applies. Blank if none fits — do not force a mapping. |
+| `actor_type` | One Actor Type, for Incidents only. Blank otherwise. |
+| `attack_id` | Optional MITRE ATT&CK id (e.g. `T1200`) where one genuinely applies. Blank if none fits; do not force a mapping. |
 | `year` | 4-digit year of the event or publication, or blank. Used for sorting. |
 | `source` | Publisher or org (e.g. `IEEE S&P`, `DOJ`, `404 Media`). |
-| `url` | Full `https` URL. **Required** — a row with no URL is invalid. |
+| `url` | Full `https` URL. **Required**; a row with no URL is invalid. |
 | `summary` | One or two plain sentences. No hype. |
 | `tags` | Freeform, joined with `; `. |
 | `link_quality` | `high` (primary/official source), `medium` (reputable secondary), or `low` (blog, forum, unconfirmed). Rates the link as a citation. |
