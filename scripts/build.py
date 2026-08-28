@@ -137,10 +137,12 @@ def validate(df):
 
 
 def anchor_for(category):
-    slug = "".join(c.lower() if c.isalnum() else "-" for c in category)
-    while "--" in slug:
-        slug = slug.replace("--", "-")
-    return slug.strip("-")
+    """Replicate GitHub's heading-anchor slug: lowercase, drop characters that
+    are not alphanumeric/space/hyphen, then spaces to hyphens. GitHub does not
+    collapse consecutive hyphens, so neither do we."""
+    slug = category.strip().lower()
+    slug = "".join(c for c in slug if c.isalnum() or c in " -")
+    return slug.replace(" ", "-")
 
 
 def md_escape(text):

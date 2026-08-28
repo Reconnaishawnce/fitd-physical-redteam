@@ -9,13 +9,13 @@ A curated, sortable reference of links for physical red teams: real-world incide
 ## Contents
 
 - [Incidents in the Wild](#incidents-in-the-wild) (1)
-- [Tradecraft & Methodology](#tradecraft-methodology) (1)
-- [Engagements & Lessons Learned](#engagements-lessons-learned) (1)
-- [Legal, Authorization & Liability](#legal-authorization-liability) (0)
-- [Tools & Gear](#tools-gear) (0)
-- [Detection & Defense](#detection-defense) (0)
-- [Talks, Reports & Case Studies](#talks-reports-case-studies) (0)
-- [Reference & Communities](#reference-communities) (2)
+- [Tradecraft & Methodology](#tradecraft--methodology) (1)
+- [Engagements & Lessons Learned](#engagements--lessons-learned) (1)
+- [Legal, Authorization & Liability](#legal-authorization--liability) (0)
+- [Tools & Gear](#tools--gear) (0)
+- [Detection & Defense](#detection--defense) (0)
+- [Talks, Reports & Case Studies](#talks-reports--case-studies) (0)
+- [Reference & Communities](#reference--communities) (2)
 
 ## Incidents in the Wild
 
