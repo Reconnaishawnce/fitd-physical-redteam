@@ -1,136 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FITD: Foot in the Door — Physical Red Team Reference Guide</title>
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css" />
-  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css" />
-  <style>
-    :root { --ink:#1a1a1a; --muted:#606060; --accent:#8b1a1a; --line:#e2e2e2; }
-    * { box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: var(--ink); margin: 0; padding: 24px; background: #fafafa; line-height: 1.45;
-    }
-    header { max-width: 1200px; margin: 0 auto 20px; }
-    h1 { margin: 0 0 4px; font-size: 28px; }
-    .subtitle { color: var(--accent); font-weight: 600; margin: 0 0 8px; }
-    .desc { color: var(--muted); max-width: 70ch; }
-    .wrap { max-width: 1200px; margin: 0 auto; background: #fff; padding: 16px;
-            border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; }
-    table.dataTable td { vertical-align: top; font-size: 13px; }
-    a { color: var(--accent); }
-    .status { color: var(--muted); font-size: 13px; margin: 12px auto; max-width: 1200px; }
-    .badge { display:inline-block; padding:1px 6px; border-radius:4px; font-size:11px; }
-    .v-yes { background:#e6f4ea; color:#1e7e34; }
-    .v-partial { background:#fff4e5; color:#a15c00; }
-    .v-no { background:#fdecea; color:#b71c1c; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FITD · Foot in the Door — Physical Red Team Reference</title>
+<meta name="description" content="A curated, searchable reference of links for physical red teams: incidents, tradecraft, engagements, legal footing, gear, defense, talks and references." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🚪%3C/text%3E%3C/svg%3E" />
+<style>
+  :root{
+    --bg:#0b0e14; --bg2:#0f1420; --panel:#131a27; --panel2:#172033;
+    --line:#232d40; --line2:#2e3a52;
+    --ink:#e8edf6; --muted:#9aa7bd; --faint:#64728c;
+    --accent:#ff4d4d; --accent2:#ff8a3d; --accentdim:#7a1f24;
+    --good:#37d67a; --warn:#f5a623; --bad:#ff5c5c;
+    --chip:#1b2536;
+    --shadow:0 10px 30px rgba(0,0,0,.45);
+    --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1100px 500px at 12% -8%, rgba(255,77,77,.10), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(255,138,61,.08), transparent 55%),
+      var(--bg);
+    color:var(--ink); font-family:var(--sans); line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent2); text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1160px; margin:0 auto; padding:0 20px}
+
+  /* Header */
+  header.hero{padding:46px 0 26px; border-bottom:1px solid var(--line)}
+  .brandrow{display:flex; align-items:center; gap:16px; flex-wrap:wrap}
+  .logo{
+    font-family:var(--mono); font-weight:700; font-size:26px; letter-spacing:1px;
+    display:inline-flex; align-items:center; gap:12px;
+  }
+  .logo .door{
+    display:inline-grid; place-items:center; width:44px; height:44px; border-radius:10px;
+    background:linear-gradient(160deg,var(--accent),var(--accentdim));
+    box-shadow:0 6px 18px rgba(255,77,77,.35); color:#fff; font-size:22px;
+  }
+  .logo .name b{color:var(--ink)}
+  .logo .name span{color:var(--accent)}
+  .tagline{color:var(--muted); font-family:var(--mono); font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; margin-top:2px}
+  .lede{color:var(--muted); max-width:74ch; margin:16px 0 0; font-size:15.5px}
+  .ghlinks{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap}
+  .ghlinks a{
+    font-family:var(--mono); font-size:12.5px; color:var(--ink);
+    border:1px solid var(--line); background:var(--panel); padding:7px 12px; border-radius:8px;
+    display:inline-flex; gap:7px; align-items:center;
+  }
+  .ghlinks a:hover{border-color:var(--accent); text-decoration:none}
+
+  /* Stat tiles */
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; margin:26px 0 6px}
+  .tile{
+    background:linear-gradient(180deg,var(--panel),var(--bg2));
+    border:1px solid var(--line); border-radius:14px; padding:16px 18px; box-shadow:var(--shadow);
+    position:relative; overflow:hidden;
+  }
+  .tile::after{content:""; position:absolute; inset:0 auto 0 0; width:3px; background:linear-gradient(var(--accent),var(--accent2))}
+  .tile .n{font-family:var(--mono); font-size:30px; font-weight:700; letter-spacing:.5px}
+  .tile .l{color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.12em; margin-top:2px}
+  .tile.good .n{color:var(--good)} .tile.warn .n{color:var(--warn)} .tile.bad .n{color:var(--bad)}
+
+  /* Chart */
+  .board{display:grid; grid-template-columns:1fr; gap:16px; margin:20px 0 6px}
+  @media(min-width:820px){ .board{grid-template-columns:1.35fr 1fr} }
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px 18px; box-shadow:var(--shadow)}
+  .card h3{margin:0 0 12px; font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:600}
+  .barrow{display:grid; grid-template-columns:150px 1fr 34px; align-items:center; gap:10px; margin:7px 0; cursor:pointer}
+  .barrow .cat{font-size:12.5px; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .bartrack{background:#0c1120; border:1px solid var(--line); border-radius:6px; height:14px; overflow:hidden}
+  .barfill{height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:6px 4px 4px 6px; min-width:2px; transition:width .5s cubic-bezier(.2,.8,.2,1)}
+  .barrow .bn{font-family:var(--mono); font-size:12px; color:var(--muted); text-align:right}
+  .barrow:hover .cat{color:var(--accent2)}
+  .yearwrap{display:flex; align-items:flex-end; gap:6px; height:120px; padding-top:6px}
+  .ycol{flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; justify-content:flex-end; height:100%}
+  .ybar{width:100%; background:linear-gradient(180deg,var(--accent2),var(--accentdim)); border-radius:5px 5px 0 0; min-height:3px; transition:height .5s}
+  .ylab{font-family:var(--mono); font-size:10px; color:var(--faint); transform:rotate(-45deg); white-space:nowrap}
+
+  /* Search + filters */
+  .controls{position:sticky; top:0; z-index:20; padding:16px 0 12px;
+    background:linear-gradient(var(--bg) 72%, transparent); margin-top:14px}
+  .searchbox{position:relative}
+  .searchbox svg{position:absolute; left:16px; top:50%; transform:translateY(-50%); width:18px; height:18px; fill:var(--faint)}
+  #q{
+    width:100%; padding:15px 16px 15px 46px; font-size:16px; color:var(--ink);
+    background:var(--panel2); border:1px solid var(--line); border-radius:12px; outline:none;
+    font-family:var(--mono);
+  }
+  #q:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(255,77,77,.15)}
+  #q::placeholder{color:var(--faint)}
+  .kbd{position:absolute; right:14px; top:50%; transform:translateY(-50%); font-family:var(--mono); font-size:11px; color:var(--faint); border:1px solid var(--line); border-radius:6px; padding:2px 7px}
+  .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+  .chip{
+    font-family:var(--mono); font-size:12px; color:var(--muted); cursor:pointer; user-select:none;
+    background:var(--chip); border:1px solid var(--line); padding:6px 11px; border-radius:999px; transition:.15s;
+  }
+  .chip:hover{color:var(--ink); border-color:var(--line2)}
+  .chip.active{background:var(--accent); border-color:var(--accent); color:#fff}
+  .chip .c{opacity:.7; margin-left:5px}
+  .meta{color:var(--faint); font-family:var(--mono); font-size:12px; margin-top:10px}
+  .meta b{color:var(--muted)}
+
+  /* Results */
+  .grid{display:grid; grid-template-columns:1fr; gap:12px; margin:8px 0 40px}
+  @media(min-width:720px){ .grid{grid-template-columns:1fr 1fr} }
+  .entry{
+    background:var(--panel); border:1px solid var(--line); border-radius:13px; padding:16px 17px;
+    display:flex; flex-direction:column; gap:9px; transition:.15s; position:relative;
+  }
+  .entry:hover{border-color:var(--accent); transform:translateY(-2px); box-shadow:var(--shadow)}
+  .entry .top{display:flex; justify-content:space-between; gap:10px; align-items:flex-start}
+  .entry h4{margin:0; font-size:15.5px; line-height:1.35}
+  .entry h4 a{color:var(--ink)}
+  .entry h4 a:hover{color:var(--accent2)}
+  .yr{font-family:var(--mono); font-size:12px; color:var(--faint); border:1px solid var(--line); border-radius:6px; padding:2px 7px; white-space:nowrap}
+  .sum{color:var(--muted); font-size:13.5px; margin:0}
+  .tagline2{display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-top:2px}
+  .pill{font-family:var(--mono); font-size:10.5px; letter-spacing:.03em; padding:3px 8px; border-radius:6px; border:1px solid var(--line); color:var(--muted); background:#0e1524}
+  .pill.cat{color:var(--accent2); border-color:var(--accentdim)}
+  .pill.tech{color:#8ab4ff; border-color:#26385e}
+  .pill.actor{color:#c99bff; border-color:#3d2c5e}
+  .v{font-family:var(--mono); font-size:10.5px; padding:3px 8px; border-radius:999px; display:inline-flex; gap:5px; align-items:center}
+  .v.yes{color:#7ff0a8; background:rgba(55,214,122,.10); border:1px solid rgba(55,214,122,.35)}
+  .v.partial{color:#ffce6b; background:rgba(245,166,35,.10); border:1px solid rgba(245,166,35,.35)}
+  .v.no{color:#ff9a9a; background:rgba(255,92,92,.10); border:1px solid rgba(255,92,92,.35)}
+  .src{font-family:var(--mono); font-size:11px; color:var(--faint)}
+  mark{background:rgba(255,138,61,.28); color:#fff; border-radius:3px; padding:0 1px}
+  .empty{grid-column:1/-1; text-align:center; color:var(--faint); font-family:var(--mono); padding:40px; border:1px dashed var(--line); border-radius:13px}
+  footer{border-top:1px solid var(--line); padding:22px 0 44px; color:var(--faint); font-family:var(--mono); font-size:12px}
+  footer a{color:var(--muted)}
+</style>
 </head>
 <body>
-  <header>
-    <h1>FITD: Foot in the Door</h1>
-    <p class="subtitle">Physical Red Team Reference Guide</p>
-    <p class="desc">
-      A curated, sortable reference of links for physical red teams. Sort, search,
-      and filter below, then use the buttons to copy or export the rows you need.
-      Data comes from <code>data/links.csv</code>, the single source of truth.
-    </p>
-  </header>
-
-  <div class="wrap">
-    <table id="links" class="display" style="width:100%">
-      <thead>
-        <tr>
-          <th>Title</th><th>Category</th><th>Technique</th><th>Actor</th>
-          <th>Year</th><th>Source</th><th>Verified</th><th>Summary</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+<header class="hero"><div class="wrap">
+  <div class="brandrow">
+    <div class="logo">
+      <span class="door">🚪</span>
+      <span class="name"><b>FITD</b> <span>·</span> Foot in the Door</span>
+    </div>
   </div>
-  <p class="status" id="status">Loading data…</p>
+  <div class="tagline">Physical Red Team Reference Guide</div>
+  <p class="lede">
+    A curated, searchable index of the physical red-team canon — real incidents, tradecraft,
+    engagement post-mortems, legal footing, gear, defense, and talks. Every entry links a primary
+    or reputable source and carries an honest confidence flag. Start typing to filter instantly.
+  </p>
+  <div class="ghlinks" id="ghlinks">
+    <a id="repolink" href="#" target="_blank" rel="noopener">★ GitHub repo</a>
+    <a id="csvlink" href="../data/links.csv" target="_blank" rel="noopener">▼ Raw CSV</a>
+    <a id="contriblink" href="#" target="_blank" rel="noopener">＋ Add a link</a>
+  </div>
 
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-  <script>
-    // Minimal, dependency-free CSV parser that handles quoted fields and commas.
-    function parseCSV(text) {
-      const rows = [];
-      let row = [], field = '', inQuotes = false;
-      for (let i = 0; i < text.length; i++) {
-        const c = text[i];
-        if (inQuotes) {
-          if (c === '"') {
-            if (text[i + 1] === '"') { field += '"'; i++; }
-            else { inQuotes = false; }
-          } else { field += c; }
-        } else if (c === '"') {
-          inQuotes = true;
-        } else if (c === ',') {
-          row.push(field); field = '';
-        } else if (c === '\n' || c === '\r') {
-          if (c === '\r' && text[i + 1] === '\n') i++;
-          row.push(field); field = '';
-          if (row.length > 1 || row[0] !== '') rows.push(row);
-          row = [];
-        } else { field += c; }
-      }
-      if (field.length > 0 || row.length > 0) { row.push(field); rows.push(row); }
-      return rows;
-    }
+  <div class="stats" id="stats"></div>
+</div></header>
 
-    function escapeHtml(s) {
-      return String(s).replace(/[&<>"']/g, m => ({
-        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-    }
+<main class="wrap">
+  <div class="board">
+    <div class="card">
+      <h3>Entries by category</h3>
+      <div id="catchart"></div>
+    </div>
+    <div class="card">
+      <h3>Coverage by year</h3>
+      <div class="yearwrap" id="yearchart"></div>
+    </div>
+  </div>
 
-    function verifiedBadge(v) {
-      const val = (v || '').toLowerCase();
-      const cls = val === 'yes' ? 'v-yes' : val === 'partial' ? 'v-partial' : 'v-no';
-      return `<span class="badge ${cls}">${escapeHtml(val || 'no')}</span>`;
-    }
+  <div class="controls">
+    <div class="searchbox">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 10-.7.7l.27.28v.79l5 5 1.5-1.5-5-5zm-6 0A4.5 4.5 0 1114 9.5 4.5 4.5 0 019.5 14z"/></svg>
+      <input id="q" type="text" autocomplete="off" spellcheck="false"
+        placeholder="Search titles, summaries, sources, techniques, tags…" />
+      <span class="kbd">/</span>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="meta" id="meta"></div>
+  </div>
 
-    fetch('../data/links.csv')
-      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
-      .then(text => {
-        const rows = parseCSV(text);
-        const header = rows.shift();
-        const idx = {};
-        header.forEach((h, i) => idx[h.trim()] = i);
+  <div class="grid" id="grid"></div>
+</main>
 
-        const data = rows.map(r => {
-          const get = k => (r[idx[k]] || '').trim();
-          const title = escapeHtml(get('title'));
-          const url = get('url');
-          const titleCell = url ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener">${title}</a>` : title;
-          return [
-            titleCell, escapeHtml(get('category')), escapeHtml(get('technique')),
-            escapeHtml(get('actor_type')), escapeHtml(get('year')),
-            escapeHtml(get('source')), verifiedBadge(get('verified')),
-            escapeHtml(get('summary')),
-          ];
-        });
+<footer><div class="wrap">
+  FITD is accountability-framed — we do not invent incidents, dates, or attributions.
+  Source of truth: <a id="csvlink2" href="../data/links.csv">data/links.csv</a>.
+  Built from CSV, no tracking, no backend.
+</div></footer>
 
-        $('#links').DataTable({
-          data: data,
-          pageLength: 25,
-          order: [[4, 'desc']],
-          dom: 'Bfrtip',
-          buttons: ['copyHtml5', 'csvHtml5', 'excelHtml5', 'print'],
-        });
-        document.getElementById('status').textContent = `${data.length} entries loaded.`;
-      })
-      .catch(err => {
-        document.getElementById('status').textContent =
-          'Could not load ../data/links.csv (' + err.message + '). ' +
-          'Serve the repo over HTTP or enable GitHub Pages so the CSV is reachable.';
-      });
-  </script>
+<script>
+const REPO = "Reconnaishawnce/fitd-physical-redteam";
+const CATEGORY_ORDER = [
+  "Incidents in the Wild","Tradecraft & Methodology","Engagements & Lessons Learned",
+  "Legal, Authorization & Liability","Tools & Gear","Detection & Defense",
+  "Talks, Reports & Case Studies","Reference & Communities",
+];
+
+document.getElementById("repolink").href = "https://github.com/"+REPO;
+document.getElementById("contriblink").href = "https://github.com/"+REPO+"/blob/main/CONTRIBUTING.md";
+
+function parseCSV(text){
+  const rows=[]; let row=[],f="",q=false;
+  for(let i=0;i<text.length;i++){const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){f+='"';i++} else q=false } else f+=c }
+    else if(c==='"') q=true;
+    else if(c===',') { row.push(f); f=""; }
+    else if(c==='\n'||c==='\r'){ if(c==='\r'&&text[i+1]==='\n')i++; row.push(f); f="";
+      if(row.length>1||row[0]!=="") rows.push(row); row=[]; }
+    else f+=c;
+  }
+  if(f.length||row.length){ row.push(f); rows.push(row); }
+  return rows;
+}
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+function hl(text,terms){
+  let out=esc(text);
+  terms.filter(t=>t.length>=2).forEach(t=>{
+    const re=new RegExp("("+t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","ig");
+    out=out.replace(re,"<mark>$1</mark>");
+  });
+  return out;
+}
+
+let DATA=[], activeCat=null;
+
+function tally(rows,key){
+  const m=new Map();
+  rows.forEach(r=>{ const v=(r[key]||"").trim(); if(v) m.set(v,(m.get(v)||0)+1); });
+  return m;
+}
+
+function renderStats(rows){
+  const v=tally(rows,"verified");
+  const yes=v.get("yes")||0, partial=v.get("partial")||0, no=v.get("no")||0;
+  const cats=new Set(rows.map(r=>r.category).filter(Boolean)).size;
+  const tiles=[
+    {n:rows.length,l:"Entries",cls:""},
+    {n:cats,l:"Categories",cls:""},
+    {n:yes,l:"Verified",cls:"good"},
+    {n:partial,l:"Partial",cls:"warn"},
+    {n:no,l:"Unverified",cls:"bad"},
+  ];
+  document.getElementById("stats").innerHTML=tiles.map(t=>
+    `<div class="tile ${t.cls}"><div class="n">${t.n}</div><div class="l">${t.l}</div></div>`).join("");
+}
+
+function renderCatChart(rows){
+  const counts=CATEGORY_ORDER.map(c=>({c,n:rows.filter(r=>r.category===c).length}));
+  const max=Math.max(1,...counts.map(x=>x.n));
+  document.getElementById("catchart").innerHTML=counts.map(x=>`
+    <div class="barrow" data-cat="${esc(x.c)}" title="Filter: ${esc(x.c)}">
+      <div class="cat">${esc(x.c)}</div>
+      <div class="bartrack"><div class="barfill" style="width:${x.n/max*100}%"></div></div>
+      <div class="bn">${x.n}</div>
+    </div>`).join("");
+  document.querySelectorAll("#catchart .barrow").forEach(el=>{
+    el.onclick=()=>{ const c=el.getAttribute("data-cat"); setCat(activeCat===c?null:c); };
+  });
+}
+
+function renderYearChart(rows){
+  const m=tally(rows,"year");
+  const years=[...m.keys()].filter(y=>/^\d{4}$/.test(y)).sort();
+  if(!years.length){ document.getElementById("yearchart").innerHTML='<div class="src">No dated entries.</div>'; return; }
+  const max=Math.max(...years.map(y=>m.get(y)));
+  document.getElementById("yearchart").innerHTML=years.map(y=>`
+    <div class="ycol" title="${y}: ${m.get(y)} entr${m.get(y)>1?'ies':'y'}">
+      <div class="ybar" style="height:${m.get(y)/max*100}%"></div>
+      <div class="ylab">${y}</div>
+    </div>`).join("");
+}
+
+function renderChips(rows){
+  const chips=[{label:"All",cat:null,n:rows.length}].concat(
+    CATEGORY_ORDER.map(c=>({label:c,cat:c,n:rows.filter(r=>r.category===c).length})).filter(x=>x.n>0)
+  );
+  document.getElementById("chips").innerHTML=chips.map(x=>
+    `<span class="chip ${activeCat===x.cat?'active':''}" data-cat="${x.cat===null?'':esc(x.cat)}">${esc(x.label)}<span class="c">${x.n}</span></span>`
+  ).join("");
+  document.querySelectorAll("#chips .chip").forEach(el=>{
+    el.onclick=()=>{ const c=el.getAttribute("data-cat"); setCat(c===""?null:(activeCat===c?null:c)); };
+  });
+}
+
+function setCat(c){ activeCat=c; renderChips(DATA); render(); }
+
+function matches(r,terms){
+  if(!terms.length) return true;
+  const hay=[r.title,r.summary,r.category,r.technique,r.actor_type,r.source,r.tags,r.year,r.attack_id]
+    .join(" ").toLowerCase();
+  return terms.every(t=>hay.includes(t));
+}
+
+function render(){
+  const terms=document.getElementById("q").value.toLowerCase().split(/\s+/).filter(Boolean);
+  let rows=DATA.slice();
+  if(activeCat) rows=rows.filter(r=>r.category===activeCat);
+  rows=rows.filter(r=>matches(r,terms));
+  rows.sort((a,b)=>(parseInt(b.year)||0)-(parseInt(a.year)||0));
+
+  const grid=document.getElementById("grid");
+  document.getElementById("meta").innerHTML=
+    `<b>${rows.length}</b> match${rows.length===1?"":"es"}`+
+    (activeCat?` · filtered to <b>${esc(activeCat)}</b>`:"")+
+    (terms.length?` · query <b>“${esc(terms.join(" "))}”</b>`:"");
+
+  if(!rows.length){ grid.innerHTML='<div class="empty">No entries match. Try fewer words or clear the filter.</div>'; return; }
+
+  grid.innerHTML=rows.map(r=>{
+    const vc=(r.verified||"no").toLowerCase();
+    const vt=vc==="yes"?"✔ verified":vc==="partial"?"◐ partial":"✕ unverified";
+    const techs=(r.technique||"").split(";").map(s=>s.trim()).filter(Boolean);
+    return `<article class="entry">
+      <div class="top">
+        <h4><a href="${esc(r.url)}" target="_blank" rel="noopener">${hl(r.title,terms)}</a></h4>
+        ${r.year?`<span class="yr">${esc(r.year)}</span>`:""}
+      </div>
+      <p class="sum">${hl(r.summary,terms)}</p>
+      <div class="tagline2">
+        <span class="pill cat">${esc(r.category)}</span>
+        ${r.actor_type?`<span class="pill actor">${esc(r.actor_type)}</span>`:""}
+        ${techs.map(t=>`<span class="pill tech">${esc(t)}</span>`).join("")}
+        <span class="v ${vc}">${vt}</span>
+      </div>
+      <div class="src">${r.source?esc(r.source):""}${r.attack_id?` · ${esc(r.attack_id)}`:""}</div>
+    </article>`;
+  }).join("");
+}
+
+fetch("../data/links.csv").then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.text(); })
+.then(text=>{
+  const rows=parseCSV(text); const head=rows.shift().map(h=>h.trim());
+  DATA=rows.map(r=>{ const o={}; head.forEach((h,i)=>o[h]=(r[i]||"").trim()); return o; });
+  renderStats(DATA); renderCatChart(DATA); renderYearChart(DATA); renderChips(DATA); render();
+})
+.catch(err=>{
+  document.getElementById("grid").innerHTML=
+    '<div class="empty">Could not load ../data/links.csv ('+esc(err.message)+').<br>Serve the repo over HTTP or enable GitHub Pages so the CSV is reachable.</div>';
+});
+
+// "/" focuses search
+const q=document.getElementById("q");
+q.addEventListener("input",render);
+document.addEventListener("keydown",e=>{
+  if(e.key==="/"&&document.activeElement!==q){ e.preventDefault(); q.focus(); }
+  if(e.key==="Escape"){ q.value=""; render(); q.blur(); }
+});
+</script>
 </body>
 </html>

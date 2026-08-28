@@ -15,6 +15,21 @@ ROOT = Path(__file__).resolve().parent.parent
 CSV_PATH = ROOT / "data" / "links.csv"
 README_PATH = ROOT / "README.md"
 
+# Repository coordinates, used for badges and the live-site link.
+REPO_SLUG = "Reconnaishawnce/fitd-physical-redteam"
+PAGES_URL = "https://reconnaishawnce.github.io/fitd-physical-redteam/"
+
+CATEGORY_EMOJI = {
+    "Incidents in the Wild": "🎯",
+    "Tradecraft & Methodology": "🛠️",
+    "Engagements & Lessons Learned": "📓",
+    "Legal, Authorization & Liability": "⚖️",
+    "Tools & Gear": "🧰",
+    "Detection & Defense": "🛡️",
+    "Talks, Reports & Case Studies": "🎤",
+    "Reference & Communities": "🔗",
+}
+
 CATEGORIES = [
     "Incidents in the Wild",
     "Tradecraft & Methodology",
@@ -167,11 +182,17 @@ def render_section(df, category):
     rows = [r for _, r in df.iterrows() if r["category"].strip() == category]
     rows.sort(key=year_sort_key, reverse=True)
 
+    emoji = CATEGORY_EMOJI.get(category, "•")
     lines = [f"## {category}", ""]
     if not rows:
-        lines.append("_No entries yet._")
+        lines.append(f"{emoji} _No entries yet — [contribute one](CONTRIBUTING.md)._ "
+                     "&nbsp;·&nbsp; [↑ Contents](#contents)")
         lines.append("")
         return lines
+
+    plural = "entry" if len(rows) == 1 else "entries"
+    lines.append(f"{emoji} _{len(rows)} {plural}_ &nbsp;·&nbsp; [↑ Contents](#contents)")
+    lines.append("")
 
     if category == "Incidents in the Wild":
         lines.append("| Title | Year | Actor | Technique | Summary |")
@@ -196,23 +217,55 @@ def render_section(df, category):
     return lines
 
 
+def badge(label, message, color):
+    def enc(text):
+        return (str(text).replace("-", "--").replace("_", "__").replace(" ", "_"))
+    return f"https://img.shields.io/badge/{enc(label)}-{enc(message)}-{color}"
+
+
 def build_readme(df):
     generated = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    total = len(df)
+    categories_used = int(df["category"].str.strip().nunique())
+    verified_yes = int((df["verified"].str.strip().str.lower() == "yes").sum())
+
     lines = [
-        "# FITD: Foot in the Door",
+        "<div align=\"center\">",
         "",
-        "**Physical Red Team Reference Guide**",
+        "# 🚪 FITD — Foot in the Door",
         "",
-        "A curated, sortable reference of links for physical red teams: real-world "
-        "incidents, tradecraft, engagement lessons, legal footing, gear, defenses, "
-        "talks, and community references. Accountability-framed — entries carry an "
-        "honest `verified` flag and link to a primary or reputable source.",
+        "### Physical Red Team Reference Guide",
         "",
-        "> **This file is generated.** Do not edit it by hand. The single source of "
-        "truth is [`data/links.csv`](data/links.csv), which GitHub also renders as a "
-        "sortable, searchable table. To add a link, append a row to the CSV — see "
-        "[CONTRIBUTING.md](CONTRIBUTING.md). A GitHub Action regenerates this README "
-        "on every push.",
+        "_The physical red-team canon in one searchable, accountability-framed index:_  ",
+        "_real incidents · tradecraft · engagement post-mortems · legal footing · gear · defense · talks._",
+        "",
+        f"[![Entries]({badge('entries', total, 'ff4d4d')})](data/links.csv) "
+        f"[![Verified]({badge('verified', f'{verified_yes}/{total}', 'ff8a3d')})](data/links.csv) "
+        f"[![Categories]({badge('categories', categories_used, '444')})](#contents) "
+        f"[![Build](https://github.com/{REPO_SLUG}/actions/workflows/build.yml/badge.svg)]"
+        f"(https://github.com/{REPO_SLUG}/actions/workflows/build.yml) "
+        f"[![License]({badge('license', 'MIT', 'blue')})](LICENSE)",
+        "",
+        f"**[🔎 Browse the live searchable index]({PAGES_URL})** · "
+        "**[➕ Add a link](CONTRIBUTING.md)** · "
+        "**[📄 Raw CSV](data/links.csv)**",
+        "",
+        "</div>",
+        "",
+        "---",
+        "",
+        "> [!NOTE]",
+        "> **This README is generated — do not edit it by hand.** The single source of "
+        "truth is [`data/links.csv`](data/links.csv), which GitHub renders as a sortable "
+        "table for free. Add a link by appending one row to the CSV (see "
+        "[CONTRIBUTING.md](CONTRIBUTING.md)); a GitHub Action re-validates the data and "
+        "regenerates this file on every push.",
+        "",
+        "> [!IMPORTANT]",
+        "> Accountability-framed: we do not invent incidents, dates, actors, or "
+        "attributions. Every row carries an honest `verified` flag "
+        "(✔ `yes` · ◐ `partial` · ✕ `no`) and links a primary or reputable source. "
+        "Contested attribution is phrased as reported, not adjudicated.",
         "",
         "## Contents",
         "",
@@ -220,15 +273,26 @@ def build_readme(df):
 
     for category in CATEGORIES:
         count = int((df["category"].str.strip() == category).sum())
-        lines.append(f"- [{category}](#{anchor_for(category)}) ({count})")
+        emoji = CATEGORY_EMOJI.get(category, "•")
+        lines.append(f"- {emoji} [{category}](#{anchor_for(category)}) — **{count}**")
     lines.append("")
 
     for category in CATEGORIES:
+        lines.append("---")
+        lines.append("")
         lines.extend(render_section(df, category))
 
     lines.append("---")
     lines.append("")
-    lines.append(f"_{len(df)} entries. Last generated {generated} (UTC) by `scripts/build.py`._")
+    lines.append("<div align=\"center\">")
+    lines.append("")
+    lines.append(
+        f"**{total} entries** · **{verified_yes} fully verified** · "
+        f"last generated **{generated}** (UTC) by "
+        "[`scripts/build.py`](scripts/build.py)"
+    )
+    lines.append("")
+    lines.append("</div>")
     lines.append("")
 
     return "\n".join(lines)
