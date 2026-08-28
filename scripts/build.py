@@ -5,8 +5,10 @@ The CSV is the single source of truth. This script validates it and
 regenerates README.md. It never edits any other file.
 """
 
+import json
+import re
 import sys
-from datetime import date, timezone, datetime
+from datetime import timezone, datetime
 from pathlib import Path
 
 import pandas as pd
@@ -14,21 +16,11 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 CSV_PATH = ROOT / "data" / "links.csv"
 README_PATH = ROOT / "README.md"
+SITE_PATH = ROOT / "docs" / "index.html"
 
 # Repository coordinates, used for badges and the live-site link.
 REPO_SLUG = "Reconnaishawnce/fitd-physical-redteam"
 PAGES_URL = "https://reconnaishawnce.github.io/fitd-physical-redteam/"
-
-CATEGORY_EMOJI = {
-    "Incidents in the Wild": "🎯",
-    "Tradecraft & Methodology": "🛠️",
-    "Engagements & Lessons Learned": "📓",
-    "Legal, Authorization & Liability": "⚖️",
-    "Tools & Gear": "🧰",
-    "Detection & Defense": "🛡️",
-    "Talks, Reports & Case Studies": "🎤",
-    "Reference & Communities": "🔗",
-}
 
 CATEGORIES = [
     "Incidents in the Wild",
@@ -182,16 +174,15 @@ def render_section(df, category):
     rows = [r for _, r in df.iterrows() if r["category"].strip() == category]
     rows.sort(key=year_sort_key, reverse=True)
 
-    emoji = CATEGORY_EMOJI.get(category, "•")
     lines = [f"## {category}", ""]
     if not rows:
-        lines.append(f"{emoji} _No entries yet — [contribute one](CONTRIBUTING.md)._ "
-                     "&nbsp;·&nbsp; [↑ Contents](#contents)")
+        lines.append("_No entries yet — [contribute one](CONTRIBUTING.md)._ "
+                     "&nbsp;·&nbsp; [Back to contents](#contents)")
         lines.append("")
         return lines
 
     plural = "entry" if len(rows) == 1 else "entries"
-    lines.append(f"{emoji} _{len(rows)} {plural}_ &nbsp;·&nbsp; [↑ Contents](#contents)")
+    lines.append(f"_{len(rows)} {plural}_ &nbsp;·&nbsp; [Back to contents](#contents)")
     lines.append("")
 
     if category == "Incidents in the Wild":
@@ -232,40 +223,35 @@ def build_readme(df):
     lines = [
         "<div align=\"center\">",
         "",
-        "# 🚪 FITD — Foot in the Door",
+        "# FITD — Foot in the Door",
         "",
         "### Physical Red Team Reference Guide",
         "",
-        "_The physical red-team canon in one searchable, accountability-framed index:_  ",
-        "_real incidents · tradecraft · engagement post-mortems · legal footing · gear · defense · talks._",
+        "A curated index of the physical red-team canon — incidents, tradecraft, engagement",
+        "post-mortems, legal footing, gear, defense, and talks. Each entry links a primary or",
+        "reputable source, sized to drop straight onto a slide.",
         "",
-        f"[![Entries]({badge('entries', total, 'ff4d4d')})](data/links.csv) "
-        f"[![Verified]({badge('verified', f'{verified_yes}/{total}', 'ff8a3d')})](data/links.csv) "
-        f"[![Categories]({badge('categories', categories_used, '444')})](#contents) "
+        f"[![Entries]({badge('entries', total, '8a2f2f')})](data/links.csv) "
+        f"[![Verified]({badge('verified', f'{verified_yes}/{total}', 'a6741c')})](data/links.csv) "
+        f"[![Categories]({badge('categories', categories_used, '6d6558')})](#contents) "
         f"[![Build](https://github.com/{REPO_SLUG}/actions/workflows/build.yml/badge.svg)]"
         f"(https://github.com/{REPO_SLUG}/actions/workflows/build.yml) "
-        f"[![License]({badge('license', 'MIT', 'blue')})](LICENSE)",
+        f"[![License]({badge('license', 'MIT', '3f7d52')})](LICENSE)",
         "",
-        f"**[🔎 Browse the live searchable index]({PAGES_URL})** · "
-        "**[➕ Add a link](CONTRIBUTING.md)** · "
-        "**[📄 Raw CSV](data/links.csv)**",
+        f"**[Browse the searchable index]({PAGES_URL})** · "
+        "**[Add a link](CONTRIBUTING.md)** · "
+        "**[Raw CSV](data/links.csv)**",
         "",
         "</div>",
         "",
         "---",
         "",
-        "> [!NOTE]",
-        "> **This README is generated — do not edit it by hand.** The single source of "
-        "truth is [`data/links.csv`](data/links.csv), which GitHub renders as a sortable "
-        "table for free. Add a link by appending one row to the CSV (see "
-        "[CONTRIBUTING.md](CONTRIBUTING.md)); a GitHub Action re-validates the data and "
-        "regenerates this file on every push.",
-        "",
-        "> [!IMPORTANT]",
-        "> Accountability-framed: we do not invent incidents, dates, actors, or "
-        "attributions. Every row carries an honest `verified` flag "
-        "(✔ `yes` · ◐ `partial` · ✕ `no`) and links a primary or reputable source. "
-        "Contested attribution is phrased as reported, not adjudicated.",
+        "The single source of truth is [`data/links.csv`](data/links.csv), which GitHub also "
+        "renders as a sortable table. Add a resource by appending one row to the CSV — see "
+        "[CONTRIBUTING.md](CONTRIBUTING.md). This README is generated by "
+        "[`scripts/build.py`](scripts/build.py) and rebuilt on every push, so don't edit it by "
+        "hand. The `confidence` column reflects how well the linked source backs the claim: "
+        "`yes` (verified), `partial`, or `no`.",
         "",
         "## Contents",
         "",
@@ -273,8 +259,7 @@ def build_readme(df):
 
     for category in CATEGORIES:
         count = int((df["category"].str.strip() == category).sum())
-        emoji = CATEGORY_EMOJI.get(category, "•")
-        lines.append(f"- {emoji} [{category}](#{anchor_for(category)}) — **{count}**")
+        lines.append(f"- [{category}](#{anchor_for(category)}) — **{count}**")
     lines.append("")
 
     for category in CATEGORIES:
@@ -298,12 +283,39 @@ def build_readme(df):
     return "\n".join(lines)
 
 
+SITE_DATA_RE = re.compile(
+    r'(<script id="fitd-data" type="application/json">)(.*?)(</script>)',
+    re.DOTALL,
+)
+
+
+def inject_site_data(df):
+    """Embed the dataset as JSON in docs/index.html so the page needs no fetch
+    and works on GitHub Pages (root or /docs), locally, or from the raw file."""
+    if not SITE_PATH.exists():
+        return False
+    html = SITE_PATH.read_text(encoding="utf-8")
+    if not SITE_DATA_RE.search(html):
+        print(f"WARN: no data marker in {SITE_PATH}; skipping embed", file=sys.stderr)
+        return False
+    records = df.to_dict(orient="records")
+    payload = json.dumps(records, ensure_ascii=False, separators=(",", ":"))
+    # Guard against breaking out of the <script> block.
+    payload = payload.replace("</", "<\\/")
+    new_html = SITE_DATA_RE.sub(lambda m: m.group(1) + payload + m.group(3), html)
+    if new_html != html:
+        SITE_PATH.write_text(new_html, encoding="utf-8")
+    return True
+
+
 def main():
     df = load_csv()
     validate(df)
     readme = build_readme(df)
     README_PATH.write_text(readme, encoding="utf-8")
-    print(f"OK: wrote {README_PATH} from {len(df)} row(s) in {CSV_PATH.name}")
+    embedded = inject_site_data(df)
+    where = f" and embedded data in {SITE_PATH.name}" if embedded else ""
+    print(f"OK: wrote {README_PATH.name} from {len(df)} row(s) in {CSV_PATH.name}{where}")
 
 
 if __name__ == "__main__":

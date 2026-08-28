@@ -6,6 +6,7 @@ on:
     paths:
       - "data/links.csv"
       - "scripts/build.py"
+      - "docs/index.html"
       - ".github/workflows/build.yml"
   workflow_dispatch:
 
@@ -27,17 +28,17 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Build README (validates CSV, fails on error)
+      - name: Build (validates CSV, regenerates README + embeds site data)
         run: python scripts/build.py
 
-      - name: Commit regenerated README if changed
+      - name: Commit regenerated files if changed
         run: |
-          if git diff --quiet -- README.md; then
-            echo "README.md unchanged; nothing to commit."
+          if git diff --quiet -- README.md docs/index.html; then
+            echo "No generated files changed; nothing to commit."
           else
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add README.md
-            git commit -m "chore: regenerate README from links.csv [skip ci]"
+            git add README.md docs/index.html
+            git commit -m "chore: regenerate README and embed site data from links.csv [skip ci]"
             git push
           fi
