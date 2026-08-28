@@ -154,10 +154,10 @@ def build_cards(prs, df):
         sr.font.size = Pt(18)
         sr.font.color.rgb = INK
 
-        verified = str(row["verified"]).strip().lower()
+        quality = str(row["link_quality"]).strip().lower()
         flag_box = slide.shapes.add_textbox(Inches(0.6), Inches(6.7), Inches(12.1), Inches(0.5))
         fr = flag_box.text_frame.paragraphs[0].add_run()
-        fr.text = f"verified: {verified}   •   {row['url']}"
+        fr.text = f"link quality: {quality}   •   {row['url']}"
         fr.font.size = Pt(11)
         fr.font.color.rgb = MUTED
 

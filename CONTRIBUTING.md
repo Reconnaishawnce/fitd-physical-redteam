@@ -20,7 +20,7 @@ every push.
 The header, in exact order:
 
 ```
-id,title,category,technique,actor_type,attack_id,year,source,url,summary,tags,verified,added
+id,title,category,technique,actor_type,attack_id,year,source,url,summary,tags,link_quality,added
 ```
 
 | Field | Rule |
@@ -36,7 +36,7 @@ id,title,category,technique,actor_type,attack_id,year,source,url,summary,tags,ve
 | `url` | Full `https` URL. **Required** — a row with no URL is invalid. |
 | `summary` | One or two plain sentences. No hype. |
 | `tags` | Freeform, joined with `; `. |
-| `verified` | `yes`, `no`, or `partial` — honest confidence that the claim is backed by the linked primary source. |
+| `link_quality` | `high` (primary/official source), `medium` (reputable secondary), or `low` (blog, forum, unconfirmed). Rates the link as a citation. |
 | `added` | ISO date `YYYY-MM-DD`. |
 
 Wrap any field that contains a comma in double quotes (standard CSV).
@@ -70,8 +70,8 @@ or attributions.**
 
 - Only add a row if you have a real, working `url` to a primary or clearly
   reputable source.
-- If you cannot confirm a detail against the linked source, set `verified` to
-  `no` or `partial` and keep the summary conservative. Do not assert.
+- If you cannot confirm a detail against the linked source, set `link_quality`
+  to `medium` or `low` and keep the summary conservative. Do not assert.
 - Attribution for nation-state activity is often "widely reported" rather than
   adjudicated. Phrase summaries accordingly; do not state contested attribution
   as settled fact.
@@ -86,7 +86,7 @@ or attributions.**
 - Every non-blank `actor_type` is in the controlled list.
 - `url` is present and starts with `http`.
 - `year` is a 4-digit number or blank.
-- `verified` is one of `yes`, `no`, `partial`.
+- `link_quality` is one of `low`, `medium`, `high`.
 
-Rows flagged `verified: no` are rendered with a trailing `[unverified]` marker
-so trust level stays visible.
+Rows flagged `link_quality: low` are rendered with a trailing `[low quality]`
+marker so citation strength stays visible.
